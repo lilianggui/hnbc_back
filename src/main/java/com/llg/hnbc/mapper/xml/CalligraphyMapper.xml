@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llg.hnbc.mapper.dao.CalligraphyDao">
+
+    <insert id="add">
+        INSERT INTO calligraphy (title, author, dynasty, typeface, description, cover_img_id,
+        cover_img_path, create_by, create_time, update_by, update_time)
+        VALUES (#{title}, #{author}, #{dynasty}, #{typeface}, #{description}, #{coverImgId},
+         #{coverImgPath}, #{createBy}, now(), #{updateBy}, now());
+    </insert>
+
+    <update id="updateCalligraphy">
+        UPDATE calligraphy SET
+        title = #{title}
+        , author = #{author}
+        , dynasty = #{dynasty}
+        , typeface = #{typeface}
+        , description = #{description}
+        , cover_img_id = #{coverImgId}
+        , cover_img_path = #{coverImgPath}
+        ,update_by = #{updateBy}
+        , update_time = now()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteCalligraphy">
+        delete from calligraphy where id = #{id}
+    </delete>
+
+    <select id="listCalligraphy" resultType="com.llg.hnbc.entity.Calligraphy">
+        select id, title, author, dynasty, typeface
+            , description
+            , cover_img_id coverImgId
+            , cover_img_path coverImgPath
+            , create_by createBy
+            , create_time createTime
+        from calligraphy
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            <if test="typeface != null and typeface != ''">
+                and typeface = #{typeface}
+            </if>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="author != null and author != ''">
+                and author like concat('%', #{author}, '%')
+            </if>
+            <if test="dynasty != null and dynasty != ''">
+                and dynasty like concat('%', #{dynasty}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

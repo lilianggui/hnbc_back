@@ -1,0 +1,25 @@
+mybatis:
+  typeAliasesPackage: com.llg.hnbc.entity
+  mapperLocations: classpath:com/llg/hnbc/mapper/xml/*.xml
+
+server:
+  port: 8088
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jackson:
+    #返回json 日期格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://localhost:3306/hnbc_database?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+system:
+  saveFilePath: /Users/lilianggui/Desktop/saveFilePath/

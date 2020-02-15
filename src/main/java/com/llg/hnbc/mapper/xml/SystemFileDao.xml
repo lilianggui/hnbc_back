@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llg.hnbc.mapper.dao.SystemFileDao">
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO sys_file (module, module_name, business_id, file_name, file_origin_name, file_path
+        , file_format, create_by, create_time, update_by, update_time)
+        VALUES (#{module}, #{moduleName}, #{businessId}, #{fileName}, #{fileOriginName}, #{filePath}
+        , #{fileFormat}, #{createBy}, now(), #{updateBy}, now())
+    </insert>
+
+    <insert id="addBatch">
+        insert into sys_file (module, module_name, business_id, file_name, file_origin_name, file_path
+        , file_format, create_by, create_time, update_by, update_time)
+        VALUES
+        <foreach collection ="list" item="item" index= "index" separator =",">
+              (
+                #{item.module}, #{item.moduleName}, #{item.businessId}, #{item.fileName}, #{item.fileOriginName}, #{item.filePath}
+                , #{item.fileFormat}, #{item.createBy}, now(), #{item.updateBy}, now()
+              )
+          </foreach >
+    </insert>
+
+    <delete id="deleteSystemFile">
+        delete from sys_file where id = #{id}
+    </delete>
+
+    <select id="getSystemFileList" resultType="com.llg.hnbc.entity.SystemFile">
+        select id, file_name fileName, file_origin_name fileOriginName
+            ,file_path filePath from sys_file
+            where business_id = #{businessId}
+            <if test="module != null and module != ''">
+                and module = #{module}
+            </if>
+    </select>
+</mapper>

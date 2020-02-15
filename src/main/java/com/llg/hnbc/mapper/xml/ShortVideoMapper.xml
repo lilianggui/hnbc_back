@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llg.hnbc.mapper.dao.ShortVideoDao">
+
+    <insert id="add">
+        INSERT INTO short_video
+        (title, video_type, description, video_file_id, video_file_path, cover_img_id
+        , cover_img_path, create_by, create_time, update_by, update_time)
+        VALUES (#{title}, #{videoType}, #{description}, #{videoFileId}
+        , #{videoFilePath}, #{coverImgId}, #{coverImgPath}, #{createBy}
+        , now(), #{updateBy}, now())
+    </insert>
+
+    <update id="updateShortVideo">
+        update short_video
+            SET title = #{title}
+            , video_type = #{videoType}
+            , description = #{description}
+            , video_file_id = #{videoFileId}
+            , video_file_path = #{videoFilePath}
+            , cover_img_id = #{coverImgId}
+            , cover_img_path = #{coverImgPath}
+            , update_by = #{updateBy}
+            , update_time = now()
+            WHERE id = #{id}
+    </update>
+    <delete id="deleteShortVideo">
+        delete from short_video where id = #{id}
+    </delete>
+
+    <select id="listShortVideo" resultType="com.llg.hnbc.entity.ShortVideo">
+        select a.id, a.title
+            , a.video_type videoType
+            , a.description
+            , a.video_file_id videoFileId
+            , a.video_file_path videoFilePath
+            , a.cover_img_id coverImgId
+            , a.cover_img_path coverImgPath
+            , a.create_by createBy
+            , a.create_time createTime
+            , b.file_origin_name videoFileOriginName
+        from short_video a
+        left join sys_file b on a.video_file_id = b.id
+        <where>
+            <if test="title != null and title != ''">
+                a.title like concat('%', #{title}, '%')
+            </if>
+            <if test="videoType != null and videoType != ''">
+                a.video_type = #{videoType}
+            </if>
+            <if test="id != null and id != ''">
+                a.id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>
